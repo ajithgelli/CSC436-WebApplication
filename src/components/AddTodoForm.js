@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../redux/todoSlice';
 
 const AddTodoForm = () => {
+
+    const dispatch = useDispatch();
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -12,19 +15,26 @@ const AddTodoForm = () => {
 
     const handleSubmit = () => {
         // validate()
-        var oldTodos = JSON.parse(localStorage.getItem('todoList')) || [];
-        var newTodos = {
+        // var oldTodos = JSON.parse(localStorage.getItem('todoList')) || [];
+        // var newTodos = {
+        //     title: title,
+        //     description: description,
+        //     dateCreated: Date.now(),
+        //     complete: complete,
+        //     dateCompleted: null
+        // }
+        // oldTodos.push(newTodos)
+        // localStorage.setItem("todoList",JSON.stringify(oldTodos))
+        // setTitle(null)
+        // setDescription(null)
+        // refreshPage()
+        dispatch(addTodo({
             title: title,
             description: description,
             dateCreated: Date.now(),
             complete: complete,
-            dateCompleted: Date.now()
-        }
-        oldTodos.push(newTodos)
-        localStorage.setItem("todoList",JSON.stringify(oldTodos))
-        setTitle(null)
-        setDescription(null)
-        refreshPage()
+            dateComplete: null
+        }))
     }
 
 

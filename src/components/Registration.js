@@ -1,16 +1,29 @@
 import React, {useState} from 'react'
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import '../App.css'
+import { register } from '../redux/authSlice';
 
 const Registration = () => {
+
+    const dispatch = useDispatch();
+
+    const auth = useSelector((state) => state.auth)
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-
-    const handleSubmit = () => {
-        // validate()
+    const handleSubmit = (event) => {
+        dispatch(register({
+            firstname: firstName,
+            lastname: lastName,
+            email: email,
+            username: username,
+            password: password
+        }))
     }
 
 
@@ -36,7 +49,7 @@ const Registration = () => {
     }
 
     return (
-        <div>
+       <div>
             <div autoComplete="off" className="container">
                 <div className="input-container">
                     <label htmlFor="firstname">Firstname</label>
@@ -90,11 +103,11 @@ const Registration = () => {
                 </div>
               
                
-                <button className="submit-button" onClick={handleSubmit}>Register</button>
-
+                <button className="submit-button" onClick={(event) => handleSubmit(event)}>Register</button>
               
             </div>
-        </div>
+            {auth.loggedIn && <p>Succesfully registered and Logged In!</p>}
+        </div>  
     )
 }
 

@@ -1,16 +1,24 @@
 import React, {useState} from 'react'
 import '../App.css'
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/authSlice';
+import { useSelector } from 'react-redux';
 
 const Login = () => {
+
+    const dispatch = useDispatch()
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const auth = useSelector((state) => state.auth)
 
-
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
         // validate()
-        localStorage.setItem("loggedIn", true)
+        dispatch(login({
+            username: username,
+            password: password
+        }))
     }
 
 
@@ -27,7 +35,7 @@ const Login = () => {
     }
 
     return (
-        <div>
+        auth.loggedIn == false ? <div>
             <div autoComplete="off" className="container">
                 <div className="input-container">
                     <label htmlFor="username">Username</label>
@@ -51,9 +59,9 @@ const Login = () => {
                     
                 </div>
                 
-                <button className="submit-button" onClick={handleSubmit}>Login</button>
+                <button className="submit-button" onClick={(event) => handleSubmit(event)}>Login</button>
             </div>
-        </div>
+        </div> :  <p>Succesfully Logged In! Go to TODO Page</p>
     )
 };
 
