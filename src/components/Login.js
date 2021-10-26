@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import '../App.css'
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/authSlice';
-import { useSelector } from 'react-redux';
+import { useResource } from 'react-request-hook';
 
 const Login = () => {
 
@@ -11,17 +11,37 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const auth = useSelector((state) => state.auth)
+
 
     const handleSubmit = (event) => {
         // validate()
-        dispatch(login({
-            username: username,
-            password: password
-        }))
+        console.log("Ass ", `login/${username}/${password}`);
+        getLogin(username, password)
+        // dispatch(login({
+        //     username: username,
+        //     password: password
+        // }))
     }
 
+    const [users, getLogin] = useResource((username, password) => ({
+        url: `login/${username}/${password}`,
+        method: 'get'
+    }))
 
+    useEffect(() => {
+        if( users && users.data !== undefined && users.data.length > 0) {
+            console.log("Success ");
+            dispatch(login({
+                loggedIn: true
+            }))
+        } 
+        // else {
+        //     console.log("Failed");
+        //     dispatch(login({
+        //         loggedIn: false
+        //     }))
+        // }
+    }, [users])
 
     const handleChange = (event) => {
         switch (event.target.name) {
@@ -35,7 +55,7 @@ const Login = () => {
     }
 
     return (
-        auth.loggedIn == false ? <div>
+        <div>
             <div autoComplete="off" className="container">
                 <div className="input-container">
                     <label htmlFor="username">Username</label>
@@ -61,7 +81,7 @@ const Login = () => {
                 
                 <button className="submit-button" onClick={(event) => handleSubmit(event)}>Login</button>
             </div>
-        </div> :  <p>Succesfully Logged In! Go to TODO Page</p>
+        </div>
     )
 };
 

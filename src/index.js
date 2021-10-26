@@ -5,12 +5,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux'
 import store from './redux/store'
+import { RequestProvider } from 'react-request-hook'
+import axios from 'axios'
+
+const axiosInstance = axios.create({
+    baseURL: 'http://localhost:4000/'
+})
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <RequestProvider  value={axiosInstance}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </RequestProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import '../App.css'
 import { register } from '../redux/authSlice';
+import { useResource } from 'react-request-hook';
 
 const Registration = () => {
 
@@ -17,15 +18,36 @@ const Registration = () => {
     const [password, setPassword] = useState('');
 
     const handleSubmit = (event) => {
-        dispatch(register({
+
+        const obj = {
             firstname: firstName,
             lastname: lastName,
             email: email,
             username: username,
             password: password
-        }))
+        }
+
+        postRegister(username, password)
+        // dispatch(register(obj))
     }
 
+    // const [users, postLogin] = useResource((obj) => ({
+    //     url: `login/${username}/${password}`,
+    //     method: 'get'
+    // }))
+
+    const [register, postRegister] = useResource((username, password) => ({
+        url: `/users`,
+        method: 'post',
+        data: { id: Date.now(), username, password}
+    }))
+
+    // useEffect(() => {
+    //     if( register && register.data) {
+    //         console.log("users in DB ", users);
+            
+    //     }
+    // }, [users])
 
 
     const handleChange = (event) => {
@@ -49,7 +71,7 @@ const Registration = () => {
     }
 
     return (
-       <div>
+        <div>
             <div autoComplete="off" className="container">
                 <div className="input-container">
                     <label htmlFor="firstname">Firstname</label>
@@ -104,10 +126,8 @@ const Registration = () => {
               
                
                 <button className="submit-button" onClick={(event) => handleSubmit(event)}>Register</button>
-              
             </div>
-            {auth.loggedIn && <p>Succesfully registered and Logged In!</p>}
-        </div>  
+        </div>
     )
 }
 

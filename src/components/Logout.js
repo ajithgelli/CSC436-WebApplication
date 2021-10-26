@@ -23,7 +23,7 @@ const Logout = (props) => {
     //     props.history.push("/login")
     // }
     return (
-        auth.loggedIn === true ? <div>
+        auth.loggedIn?.loggedIn === true ? <div>
             <button onClick={(event) => handleClick(event)}>Logout</button>
         </div> : <p> You are succesfully Logged out!</p>
     )

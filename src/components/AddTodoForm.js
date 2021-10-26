@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { addTodo } from '../redux/todoSlice';
+import { useResource } from 'react-request-hook';
 
 const AddTodoForm = () => {
 
@@ -14,27 +15,15 @@ const AddTodoForm = () => {
 
 
     const handleSubmit = () => {
-        // validate()
-        // var oldTodos = JSON.parse(localStorage.getItem('todoList')) || [];
-        // var newTodos = {
-        //     title: title,
-        //     description: description,
-        //     dateCreated: Date.now(),
-        //     complete: complete,
-        //     dateCompleted: null
-        // }
-        // oldTodos.push(newTodos)
-        // localStorage.setItem("todoList",JSON.stringify(oldTodos))
-        // setTitle(null)
-        // setDescription(null)
-        // refreshPage()
-        dispatch(addTodo({
+        const todo = {
             title: title,
             description: description,
             dateCreated: Date.now(),
             complete: complete,
-            dateComplete: null
-        }))
+            dateComplete: complete === true ? Date.now() : null
+        }
+        createTodo(todo)
+        dispatch(addTodo(todo))
     }
 
 
@@ -62,6 +51,13 @@ const AddTodoForm = () => {
         console.log("ist", event.target.value);
         setComplete(event.target.value)
     }
+
+    const [todo, createTodo] = useResource((singleTodo) => ({
+        url: '/todos',
+        method: 'post',
+        data: singleTodo
+    }))
+
 
     return (
         <div>
