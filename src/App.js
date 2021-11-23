@@ -2,20 +2,29 @@ import logo from './logo.svg';
 import './App.css';
 import TodoList from './components/TodoList'
 import AddTodoForm from './components/AddTodoForm'
+import Button from 'react-bootstrap/Button'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import Login from './components/Login';
-import Logout from './components/Logout';
-import Registration from './components/Registration'
+
+import { Container, Nav, Navbar, NavbarBrand } from 'react-bootstrap';
+import AppRoutes from './AppRoutes'; 
+import Header from './Header'; 
+
 function App() {
   return (
-    <Router>
-      <nav>
+
+    <div>
+       <Header></Header>
+       <br />
+        <div className="content">
+          <AppRoutes/>
+        </div>
+     </div>
+    // <Router>
+
+
+     
+      /* { <nav>
         <ul>
           <li>
             <Link to="/login">Login</Link>
@@ -30,23 +39,28 @@ function App() {
             <Link to="/logout">Logout</Link>
           </li> 
         </ul>
-      </nav>
+        <ul> 
+          <li> <Button>Final</Button></li>
+         </ul>
+      </nav> */
+    //}
 
-      <Switch>
-        <Route path="/todo">
-          <TodoList></TodoList>
-        </Route>
-        <Route path="/register">
-          <Registration></Registration>
-        </Route>
-        <Route path="/login">
-          <Login></Login>
-        </Route>
-        <Route path="/logout">
-          <Logout></Logout>
-        </Route>
-      </Switch>
-    </Router>
+      // <Switch>
+      //   <Route path="/todo">
+      //     <TodoList></TodoList>
+      //   </Route>
+      //   <Route path="/register">
+      //     <Registration></Registration>
+      //   </Route>
+      //   <Route path="/login">
+      //     <Login></Login>
+      //   </Route>
+      //   <Route path="/logout">
+      //     <Logout></Logout>
+      //   </Route>
+      // </Switch>
+    // {/* </Router> */}
+
   );
 }
 

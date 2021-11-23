@@ -10,19 +10,22 @@ const AddTodoForm = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [dateCreated, setDateCreated] = useState('');
-    const [complete, setComplete] = useState('');
+    const [complete, setComplete] = useState(false);
     const [dateComplete, setDateComplete] = useState('');
 
 
     const handleSubmit = () => {
+        const userId = localStorage.getItem('userId')
+        var jwt = localStorage.getItem('access_token')
         const todo = {
             title: title,
             description: description,
             dateCreated: Date.now(),
             complete: complete,
-            dateComplete: complete === true ? Date.now() : null
+            dateComplete: complete === true ? Date.now() : null,
+            userId: userId
         }
-        createTodo(todo)
+        createTodo(todo, jwt)
         dispatch(addTodo(todo))
     }
 
@@ -39,9 +42,9 @@ const AddTodoForm = () => {
                 setDescription(event.target.value)
                 break;
             case 'complete':
-                if(event.target.checked)
+                if (event.target.checked)
                     setComplete(true)
-                else 
+                else
                     setComplete(false)
                 break;
         }
@@ -52,9 +55,12 @@ const AddTodoForm = () => {
         setComplete(event.target.value)
     }
 
-    const [todo, createTodo] = useResource((singleTodo) => ({
-        url: '/todos',
+    const [todo, createTodo] = useResource((singleTodo, jwtStr) => ({
+        url: '/todo',
         method: 'post',
+        headers: {
+            'Authorization': 'Bearer ' + jwtStr
+        },
         data: singleTodo
     }))
 

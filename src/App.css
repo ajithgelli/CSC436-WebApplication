@@ -46,6 +46,12 @@
     margin-top: 30px;
 }
 
+.block-home {
+    padding-right: 400px;
+    padding-left: 400px;
+    margin-bottom: 15px;
+}
+
 .input-container {
     display: flex;
     flex-direction: column;
@@ -88,4 +94,8 @@ li {
 .dates {
     margin-left: 50px;
     margin-right: 50px;
+}
+
+.content {
+    margin-top: 100px;
 }

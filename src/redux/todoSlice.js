@@ -14,8 +14,8 @@ const todoSlice = createSlice({
                 const posts = action.payload
                 state.splice(0, state.length)
                 posts.forEach(post => {
-                    state.push(post)
-                })
+                        state.push(post)
+                    })
                     // state.concat(action.payload)
                 console.log("After reducing: ", state.length);
             },
@@ -34,11 +34,11 @@ const todoSlice = createSlice({
             toggleComplete: (state, action) => {
                 console.log("Acction", action.payload);
                 const index = state.findIndex(
-                    (todo) => todo.id === action.payload.id
+                    (todo) => todo._id === action.payload.id
                 )
                 console.log("Inndex", index);
                 state[index].complete = action.payload.complete
-                if(action.payload.complete === true) {
+                if (action.payload.complete === true) {
                     state[index].dateComplete = Date.now()
                 } else {
                     state[index].dateComplete = null
@@ -47,7 +47,10 @@ const todoSlice = createSlice({
             },
             //DELETE_TODO Action and Reducer
             deleteTodo: (state, action) => {
-                return state.filter((todo) => todo.id !== action.payload.id)
+                console.log("A ", state);
+                console.log("B ", action.payload);
+
+                return state.filter((todo) => todo._id !== action.payload.id)
             }
         }
     },

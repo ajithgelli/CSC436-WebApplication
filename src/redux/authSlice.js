@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 
 const authSlice = createSlice({
-    name: "auth",
-    initialState: {},
+    name: "users",
+    initialState: [],
     // initialState: {
     // loggedIn: false,
     // user_store: [
@@ -22,6 +22,17 @@ const authSlice = createSlice({
     reducers: {
 
         // REGISTER Action and Reducer
+        storeUsers: (state, action) => {
+            console.log("st", action.payload);
+
+            const users = action.payload
+            state.splice(0, state.length)
+            users.forEach(user => {
+                state.push(user)
+            })
+
+            console.log("after st", state.user_store);
+        },
         initialAuth: (state, action) => {
             // console.log("Reducer", action.payload);
             // const users = action.payload
@@ -42,13 +53,13 @@ const authSlice = createSlice({
                 username: action.payload.username,
                 password: action.payload.password,
             };
-            state.user_store.push(newUser)
+            console.log("User store users list ", state);
             state.loggedIn = true
         },
         // LOGIN Action and Reducer
         login: (state, action) => {
             console.log("Reducer stat ", action.payload);
-            state.loggedIn = action.payload
+            // state.loggedIn = action.payload
             console.log("State changed to ", state);
 
             // const isUser = action.payload.users_list.user_store.find((user) => user.username === action.payload.username && user.password === action.payload.password)
@@ -71,6 +82,7 @@ const authSlice = createSlice({
 export const {
     register,
     login,
+    storeUsers,
     logout
 } = authSlice.actions;
 

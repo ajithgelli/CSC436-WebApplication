@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import '../App.css'
 import { register } from '../redux/authSlice';
 import { useResource } from 'react-request-hook';
+import { Modal } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
 const Registration = () => {
 
@@ -17,9 +19,15 @@ const Registration = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const [reg, setReg] = useState(false)
+
+    const handleRegShow = () => setReg(true);
+    const handleRegClose = () => setReg(false)
+
     const handleSubmit = (event) => {
 
         const obj = {
+            id: Date.now(),
             firstname: firstName,
             lastname: lastName,
             email: email,
@@ -27,27 +35,26 @@ const Registration = () => {
             password: password
         }
 
-        postRegister(username, password)
-        // dispatch(register(obj))
+        postLogin(obj)
+        dispatch(register(obj))
     }
 
-    // const [users, postLogin] = useResource((obj) => ({
-    //     url: `login/${username}/${password}`,
-    //     method: 'get'
-    // }))
-
-    const [register, postRegister] = useResource((username, password) => ({
-        url: `/users`,
-        method: 'post',
-        data: { id: Date.now(), username, password}
+    const [users, postLogin] = useResource((obj) => ({
+        url: `users`,
+        data: obj,
+        method: 'post'
     }))
 
-    // useEffect(() => {
-    //     if( register && register.data) {
-    //         console.log("users in DB ", users);
-            
-    //     }
-    // }, [users])
+    useEffect(() => {
+        if( users && users.data) {
+            console.log("users in DB ", users);
+            // dispatch(login({
+            //     username: username,
+            //     password: password,
+            //     users_list: users.data
+            // }))
+        }
+    }, [users])
 
 
     const handleChange = (event) => {
@@ -71,8 +78,20 @@ const Registration = () => {
     }
 
     return (
+
         <div>
-            <div autoComplete="off" className="container">
+            <div class="d-grid gap-2 block-home">
+            <Button variant="primary btn-success" onClick={handleRegShow}>
+                    Registration
+                </Button>
+            </div>
+
+            <Modal show={reg} onHide={handleRegClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Registration</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <div autoComplete="off" className="container">
                 <div className="input-container">
                     <label htmlFor="firstname">Firstname</label>
                     <input
@@ -126,8 +145,12 @@ const Registration = () => {
               
                
                 <button className="submit-button" onClick={(event) => handleSubmit(event)}>Register</button>
+              
             </div>
+                </Modal.Body>
+            </Modal>
         </div>
+
     )
 }
 
